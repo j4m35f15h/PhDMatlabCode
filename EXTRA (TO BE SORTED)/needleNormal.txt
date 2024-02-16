@@ -1,0 +1,34 @@
+1:IOException --------------------------------
+The process cannot access the file '\\icnas4.cc.ic.ac.uk\jem14\pictures\image022.jpg.xml' because it is being used by another process.
+
+=============================
+1:IOException --------------------------------
+   at System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   at System.IO.FileStream.Init(String path, FileMode mode, FileAccess access, Int32 rights, Boolean useRights, FileShare share, Int32 bufferSize, FileOptions options, SECURITY_ATTRIBUTES secAttrs, String msgPath, Boolean bFromProxy)
+   at System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share)
+   at LeicaMicrosystems.Framework.LMSCollectionSerialiser.Deserialise(String tagName, String filename, Type type)
+   at LeicaMicrosystems.Framework.ImageInfoFile.ReadImageInfo(String imagePath)
+   at LeicaMicrosystems.Framework.ImageInfoFile.ReadImageInfo(String imagePath, String& time, String& date, String& description, String& notes)
+   at LeicaMicrosystems.Framework.AnnotationModule.LoadImageInfo()
+   at LeicaMicrosystems.Framework.AnnotationModule.ImageViewer_LoadedStillImage(Object sender, EventArgs e)
+   at System.EventHandler.Invoke(Object sender, EventArgs e)
+   at LeicaMicrosystems.Framework.LASImageViewerControl.OnLoadedStillImage(EventArgs e)
+   at LeicaMicrosystems.Framework.LASImageViewerControl.ShowImage(RasterImage image, String assoicatedFileName)
+   at LeicaMicrosystems.Framework.LASImageViewerControl.ShowImage(String fileName, Boolean forceReload)
+   at LeicaMicrosystems.Framework.LASImageViewerControl.ShowImage(String fileName)
+   at LeicaMicrosystems.Framework.ImageViewerView.theImageGallery_ActiveThumbnailChanged(Object sender, EventArgs e)
+   at System.EventHandler.Invoke(Object sender, EventArgs e)
+   at LeicaMicrosystems.Framework.ImageGalleryControl.OnActiveThumbnailChanged(Object sender, EventArgs e)
+   at LeicaMicrosystems.Framework.ImageGalleryControl.ImageGalleryControl_SelectionChangedEventHandler(Object sender, EventArgs e)
+   at LeicaMicrosystems.Legacy.GUI.LMSGallery.OnSelectionChanged()
+   at LeicaMicrosystems.Framework.ImageGalleryControl.AddThumbnails(ImageThumbnailControl[] thumbs)
+   at LeicaMicrosystems.Framework.ImageGalleryThread.UI_AddThumbnailsFromQueue()
+   at System.Windows.Forms.Control.InvokeMarshaledCallbackDo(ThreadMethodEntry tme)
+   at System.Windows.Forms.Control.InvokeMarshaledCallbackHelper(Object obj)
+   at System.Threading.ExecutionContext.runTryCode(Object userData)
+   at System.Runtime.CompilerServices.RuntimeHelpers.ExecuteCodeWithGuaranteedCleanup(TryCode code, CleanupCode backoutCode, Object userData)
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Windows.Forms.Control.InvokeMarshaledCallback(ThreadMethodEntry tme)
+   at System.Windows.Forms.Control.InvokeMarshaledCallbacks()
+
