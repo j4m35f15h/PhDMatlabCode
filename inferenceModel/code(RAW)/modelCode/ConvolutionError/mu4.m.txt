@@ -1,0 +1,42 @@
+for i = 1:size(f4,2)
+	%The resolution we can make time dependant. Ideally the time increase
+	%will be similar to adding another variance value. for now why don't
+	%we try a 5x5x5 grid. If that proves too large, we can reduce the 
+	%array size.
+
+	res = 5		%What do we want the size of the sampling to look like. Half the lattice?
+	xCoor = lattice(f4(1,i))-object.resolution(1)/2:object.resolution(1)/(res-1):lattice(f4(1,i))+object.resolution(1)/2;
+	yCoor = lattice(f4(1,i)+N)-object.resolution(2)/2:object.resolution(2)/(res-1):lattice(f4(1,i)+N)+object.resolution(2)/2;
+	zCoor = lattice(f4(1,i)+2*N)-object.resolution(3)/2:object.resolution(3)/(res-1):lattice(f4(1,i)+2*N)+object.resolution(3)/2;
+	[XCoor,YCoor,ZCoor] = meshgrid(xCoor,yCoor,zCoor);
+	sampleRegion = [XCoor(:)',YCoor(:)',ZCoor(:)'];
+	
+%Need to create the mesh estimate which is done by transforming the lattice using one of the coordinate triplets from the sampleRegion
+%Ideally: sampleRegion*[appropriate meshCoefficients in triplicate]
+%For all the possible triplicates for this point, perform the volume comparison:
+estKernel =inpolyhedron(meshEst,[xrange(1):diff(xrange)/9:xrange(2)],[yrange(1):diff(yrange)/9:yrange(2)],[zrange(1):diff(zrange)/9:zrange(2)]);
+idealKernel =inpolyhedron(objectN,[xrange(1):diff(xrange)/9:xrange(2)],[yrange(1):diff(yrange)/9:yrange(2)],[zrange(1):diff(zrange)/9:zrange(2)]);
+temp = zeros(size(xax));
+temp(estKernel) = 1;
+estKernel = temp;
+
+temp = zeros(size(xax));
+temp(idealKernel) = 1;
+idealKernel = temp;
+errorComp = sum(sum(sum(idealKernel)));
+
+%for not, 0 or -1 depending. estKernel already 0 padded
+idealKernel(idealKernel==0) = -1;
+%.* the two then sum sum sum
+%Need to store in appropriate array
+%Put the error values into a gaussian function?
+%Fit the values into three gaussians
+%Perform for all points
+%Find entropy divergence
+%Edit variance of the gaussian
+%I wanna try something simple first. We simply find a variance value that rescales the errors so that the difference in magnitude is minimised for 
+%all points.
+convErr = abs(sum(sum(sum(estKernel.*idealKernel)))-errorComp)/(10^3);
+%end of for
+
+end

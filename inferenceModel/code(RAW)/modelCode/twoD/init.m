@@ -1,0 +1,2 @@
+addpath("BasicManip")
+addpath("Morishita")
