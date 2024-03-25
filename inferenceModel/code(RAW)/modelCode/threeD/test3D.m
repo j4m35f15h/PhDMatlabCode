@@ -1,7 +1,3 @@
-% cols = 9;
-% rows = 9;
-% deps = 8;
-
 %Set the number of lattice intersections in x,y and z
 cols = 11;
 rows = 11;
