@@ -1,6 +1,6 @@
 function [cArray] = formCoefArray(A,B1,D1,B2,D2,mu1,mu2)
 
-%FORMU creates the coefficient array seen in Eqn 13 of Morishita et al. 2014
+%formCoefArray creates the coefficient array seen in Eqn 13 of Morishita et al. 2014
 
 cArray = zeros(size(A,1) + size(B1,1) + size(B2,1),size(A,2) + size(B1,2) + size(B2,2));
 cArray(1:size(A,1),1:size(A,2)) = A;
