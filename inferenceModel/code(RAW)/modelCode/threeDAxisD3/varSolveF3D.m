@@ -16,13 +16,13 @@ stepsize = 1;
 while 1 %Repeating loop to iterate mu1
     
     %Calculate variance in marginal likelihood over small space of mu1
-    margLikeLocal(1,2) = latticesolve3DF(x,A,B1,D1,B2,D2,mu1,mu2);
+    margLikeLocal(1,2) = margLike3DF(x,A,B1,D1,B2,D2,mu1,mu2);
     mu1 = mu1 + stepsize;
 
-    margLikeLocal(1,3) = latticesolve3DF(x,A,B1,D1,B2,D2,mu1,mu2);
+    margLikeLocal(1,3) = margLike3DF(x,A,B1,D1,B2,D2,mu1,mu2);
     mu1 = mu1 - 2*stepsize;
 
-    margLikeLocal(1,1) = latticesolve3DF(x,A,B1,D1,B2,D2,mu1,mu2);
+    margLikeLocal(1,1) = margLike3DF(x,A,B1,D1,B2,D2,mu1,mu2);
 
     %Identify slope of local area
     temp = [sign(margLikeLocal(2)-margLikeLocal(1)),sign(margLikeLocal(2)-margLikeLocal(3))];
@@ -49,13 +49,13 @@ stepsize = 1; %Reset stepsize from maximising mu1
 while 1 %Repeating loop to iterate mu2
     
     %Calculate variance in marginal likelihood over small space of mu2
-    margLikeLocal(1,2) = latticesolve3DF(x,A,B1,D1,B2,D2,mu1,mu2);
+    margLikeLocal(1,2) = margLike3DF(x,A,B1,D1,B2,D2,mu1,mu2);
     mu2 = mu2 + stepsize;
 
-    margLikeLocal(1,3) = latticesolve3DF(x,A,B1,D1,B2,D2,mu1,mu2);
+    margLikeLocal(1,3) = margLike3DF(x,A,B1,D1,B2,D2,mu1,mu2);
     mu2 = mu2 - 2*stepsize;
 
-    margLikeLocal(1,1) = latticesolve3DF(x,A,B1,D1,B2,D2,mu1,mu2);
+    margLikeLocal(1,1) = margLike3DF(x,A,B1,D1,B2,D2,mu1,mu2);
 
     %Identify slope of local area
     temp = [sign(margLikeLocal(2)-margLikeLocal(1)),sign(margLikeLocal(2)-margLikeLocal(3))];
