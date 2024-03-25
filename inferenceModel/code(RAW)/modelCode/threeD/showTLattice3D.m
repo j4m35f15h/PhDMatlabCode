@@ -1,3 +1,4 @@
+%Print script to show an example deformed lattice with accompanying data
 M1 = size(X,2)/3;
 figure
 hold on
