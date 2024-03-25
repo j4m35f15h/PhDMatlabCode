@@ -1,5 +1,5 @@
 function [lattice] = latticeMin3D(in,lattice,theta,f1,f2,x,cArray,precision)
-%VARSOLVFMIN3D2 minimises the H function as a function of a single lattice
+%latticeMin3D minimises the H function as a function of a single lattice
 %intersection provided by the index "in". Uses a course-fine algorithm to
 %find the coordinate for "in" which minimises the H function.
 
