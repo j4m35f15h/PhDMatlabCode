@@ -1,5 +1,5 @@
 function [local,localIndex] = neighbours3D(In,lattice,cols,rows)
-%NEIGHBOURS Finds the directly connected neighbours of a given vertex (by 
+%NEIGHBOURS3D Finds the directly connected neighbours of a given vertex (by 
 %index In). For each of the six possible neighbours, we check if the index
 %given is at the end. Out of bounds neighbours are NaN by default.
 
