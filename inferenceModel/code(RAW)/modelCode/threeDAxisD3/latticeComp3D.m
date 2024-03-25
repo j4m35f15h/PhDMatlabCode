@@ -1,3 +1,5 @@
+%A quick comparison on an estimate latticeNew and a known deformed trueLattice.
+%f3 may not exist
 figure
 subplot(1,2,1)
 hold on
