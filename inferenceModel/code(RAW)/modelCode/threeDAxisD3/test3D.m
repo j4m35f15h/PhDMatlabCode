@@ -1,35 +1,42 @@
 % cols = 9;
 % rows = 9;
 % deps = 8;
+
+%Set the number of lattice intersections in x,y and z
 cols = 11;
 rows = 11;
 deps = 9;
 
-rng(2)
 
-
-% drawnRudiment3D
+% Load in the stl (e.g.):
 load('idealStartScaled.mat')
 object=object2;
+
+%Transforms applied to mesh. Here for example a 40 deg rotation is applied
+%If there is an obvious orthogonal major and minor axis, they should be
+%aligned with x and y
 temp2 = mean(object.vertices);
 object.vertices = object.vertices - temp2;
 object.vertices = object.vertices*RZ(40);
 object.vertices = object.vertices + temp2;
 
-'rudiment loaded'
+'initial geometry loaded'
+
+
 [lattice,faces,object] = formLattice3D(rows,cols,deps,object);
 N = size(lattice,2)/3;
-% testCE
+
+% %If the convvolutional correction is needed:
+% initCE
 
 
 
 latticeRefine3D
 %setBoundary's role is captured by latticeRefine
-% [f1,f2,theta] = setBoundary(lattice,cols);
 'lattice constructed'
 
 % spoofDataSimple3D
-% % spoofDataRegular3D
+% spoofDataRegular3D
 % spoofDataTransform3D
 % spoofLatticeTransform3D
 load('ModelCoord.mat')
@@ -39,6 +46,7 @@ CBStat = CBStat + temp2;
 X = [CBStat(:,1)'+object.offset(1),CBStat(:,2)'+object.offset(2),CBStat(:,3)'+object.offset(3)];
 
 
+%Sometimes more complicated transforms may be required
 load('idealStatScaled.mat')
 temp = mean(object2.vertices);
 object2.vertices = object2.vertices - temp;
@@ -68,17 +76,16 @@ object2.vertices = object2.vertices + temp2;
 x = [CAStat(:,1)',CAStat(:,2)',CAStat(:,3)'];
 objectN = object2;
 
-
-
-
 'data found'
 
+%Equations for B1 can be loaded in, it is only the substitution of
+%coordinate values that creates a specific solution
 % [B1X,B1Y,B1Z] = EqnSolveF3D();
 % B1eqn3D = [B1X,B1Y,B1Z];
 load('B1Eqn3D')
 B1Aug = B1Solve3D(B1eqn3D,lattice,theta,cols,rows);
 [D1,B1] = B1Process3D(B1Aug,f1,theta); %clear B1Aug;
-'B solved'
+'B1 solved'
 
 faceID = faceIDFind3D(X,lattice,faces,object);
 A = ASolveN3D(X,theta,lattice,faces,faceID);
@@ -87,105 +94,19 @@ A = ASolveN3D(X,theta,lattice,faces,faceID);
 % B2Eqn = eqnSolveF3D2();
 % [D2,B2] = B2Solve3D2(B2Eqn,f1,f2,lattice,cols,rows,theta);
 [D2,B2] = B2Solve3D(f1,f2,lattice,cols,rows,theta);
-% [D3,B3] = B3Solve3D(f2,f3,lattice,cols,rows);
 'coefficients solved and processed'
 clear anisotropy growthMag i j
-% slicolate
-tic
-% [mu1] = varSolvF3D2(x,A,B1,D1,1e-5);
-[mu1,mu2] = varSolvF3D(x,A,B1,D1,B2,D2,1e-5);
-% [mu1,mu2,mu3] = varSolvF3D3(x,A,B1,D1,B2,D2,B3,D3,1e-5);
+
+% tic
+[mu1,mu2] = varSolveF3D(x,A,B1,D1,B2,D2,1e-5);
 'variances found'
-toc
+% toc
+
 clear anisotropy growthMag i j
 tic
-[latticeNewStat,passes] = latticeSolveF23D(A,B1,D1,B2,D2,mu1,mu2,x,lattice,theta,f1,f2);
-% [latticeNewStat,passes] = latticeSolveF23D2(A,B1,D1,B2,D2,mu1,mu2,x,lattice,theta,f1,f2);
-% [latticeNew,passes] = latticeSolveF23D3(A,B1,D1,B2,D2,B3,D3,mu1,mu2,mu3,x,lattice,theta,f1,f2,f3);
+[latticeNewStat,passes] = bayesianInferMin3D(A,B1,D1,B2,D2,mu1,mu2,x,lattice,theta,f1,f2);
+
 % tic
-% [latticeNew,passes] = latticeSolveF23DCE(A,B1,D1,B2,D2,mu1,mu2,x,latticeNew,faces,theta,f1,f2,f4,object,objectN);
-
-% mu1Stat = mu1;
-% mu2Stat = mu2;
+% [latticeNew,passes] = bayesianInferMin3DCE(A,B1,D1,B2,D2,mu1,mu2,x,latticeNew,faces,theta,f1,f2,f4,object,objectN);
 
 
-
-
-
-% cols = 11;
-% rows = 11;
-% deps = 9;
-% 
-% load('idealStartScaled.mat')
-% object=object2;
-% temp2 = mean(object.vertices);
-% object.vertices = object.vertices - temp2;
-% object.vertices = object.vertices*RZ(40);
-% object.vertices = object.vertices + temp2;
-% 'rudiment loaded'
-% [lattice,faces,object] = formLattice3D(rows,cols,deps,object);
-% N = size(lattice,2)/3;
-% 
-% % testCE
-% 
-% 
-% 
-% latticeRefine3D
-% %setBoundary's role is captured by latticeRefine
-% % [f1,f2,theta] = setBoundary(lattice,cols);
-% 'lattice constructed'
-% 
-% % spoofDataSimple3D
-% % % spoofDataRegular3D
-% % spoofDataTransform3D
-% % spoofLatticeTransform3D
-% load('ModelCoord.mat')
-% CBDyn = CBDyn - temp2;
-% CBDyn = CBDyn*RZ(40);
-% CBDyn = CBDyn + temp2;
-% X = [CBDyn(:,1)'+object.offset(1),CBDyn(:,2)'+object.offset(2),CBDyn(:,3)'+object.offset(3)];
-% 
-% load('idealDynScaled.mat')
-% object2.vertices(:,1) = object2.vertices(:,1) + 200;
-% CADyn(:,1) = CADyn(:,1) + 200;
-% object2.vertices(:,3) = object2.vertices(:,3) + 300;
-% CADyn(:,3) = CADyn(:,3) + 300;
-% 
-% temp2 = mean(object2.vertices);
-% CADyn = CADyn - temp2;
-% CADyn = CADyn*RZ(30);
-% CADyn = CADyn + temp2;
-% object2.vertices = object2.vertices - temp2;
-% object2.vertices = object2.vertices*RZ(30);
-% object2.vertices = object2.vertices + temp2;
-% 
-% x = [CADyn(:,1)',CADyn(:,2)',CADyn(:,3)'];
-% objectN = object2;
-% 'data found'
-% 
-% % [B1X,B1Y,B1Z] = EqnSolveF3D();
-% % B1eqn3D = [B1X,B1Y,B1Z];
-% load('B1Eqn3D')
-% B1Aug = B1Solve3D(B1eqn3D,lattice,theta,cols,rows);
-% [D1,B1] = B1Process3D(B1Aug,f1,theta); %clear B1Aug;
-% 'B solved'
-% 
-% faceID = faceIDFind3D(X,lattice,faces,object);
-% A = ASolveN3D(X,theta,lattice,faces,faceID);
-% 'A solved'
-% 
-% % B2Eqn = eqnSolveF3D2();
-% % [D2,B2] = B2Solve3D2(B2Eqn,f1,f2,lattice,cols,rows,theta);
-% [D2,B2] = B2Solve3D(f1,f2,lattice,cols,rows,theta);
-% % [D3,B3] = B3Solve3D(f2,f3,lattice,cols,rows);
-% 'coefficients solved and processed'
-% clear anisotropy growthMag i j
-% % slicolate
-% % [mu1] = varSolvF3D2(x,A,B1,D1,1e-5);
-% [mu1,mu2] = varSolvF3D(x,A,B1,D1,B2,D2,1e-5);
-% % [mu1,mu2,mu3] = varSolvF3D3(x,A,B1,D1,B2,D2,B3,D3,1e-5);
-% 'variances found'
-% 
-% clear anisotropy growthMag i j
-% tic
-% [latticeNewDyn,passes] = latticeSolveF23D(A,B1,D1,B2,D2,mu1,mu2,x,lattice,theta,f1,f2);

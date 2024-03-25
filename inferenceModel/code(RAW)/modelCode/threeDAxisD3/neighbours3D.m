@@ -1,9 +1,8 @@
 function [local,localIndex] = neighbours3D(In,lattice,cols,rows)
-%NEIGHBOURS Summary of this function goes here
-%   When making the nieghbour function 3D, we need to remember that we have
-%   a new edge case, located at the top and bottom of each plane. This can
-%   be represented by if moving to the next row causes the division by
-%   row*col reaches above the next integer.
+%NEIGHBOURS Finds the directly connected neighbours of a given vertex (by 
+%index In). For each of the six possible neighbours, we check if the index
+%given is at the end. Out of bounds neighbours are NaN by default.
+
 M1 = size(lattice,2)/3;
 X = NaN(1,6);
 Y = NaN(1,6);

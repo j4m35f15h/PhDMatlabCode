@@ -1,24 +1,20 @@
 function [w] = interpolationCoef3D(theta,X)
-%INTERPOLATIONCOEF - returns a line of w for a single point.
-%W has 4 elements for each of the points. it is a definition of the
-%relative position between the center of the square and lattice point. dx
-%and dy must be calculated each time and represent the distance betwwen the
-%lattice point and the center of the region.
+%INTERPOLATIONCOEF returns a line of w for a single cell coordinate.
+%W has 8 elements for each of the points. These values represent the
+%relative position of the coordinate in the cube. When the coordinates of
+%the cube are altered, multiplying w by the new coordinates will return the
+%new position of the cell.
 
-%As inputs, let's assume that we have the 4 lattice coordinates, as well as
-%the point of interest, X
-% w = sym('W',[1 4]);
-w = zeros(1,6);
+w = zeros(1,8);
+
+%Centre of the cube in x,y,z
 C = zeros(1,3);
 C(1) = sum(theta(1:8))/8;
 C(2) = sum(theta(9:16))/8;
 C(3) = sum(theta(17:24))/8;
- 
-% for i = 1:4
-%     w(i) = .25*(1+ (X(1) - C(1))/abs((theta(i) - C(1))) )*...
-%                (1+ (X(2) - C(2))/abs((theta(4+i) - C(2))) );
-% end
 
+%Signs of the expression vary according to the position of the cube
+%coordinate, as indicated in the thesis
 w(5) = .125*(1- (X(1) - C(1)) / abs((theta(5) - C(1))) )*...
         (1- (X(2) - C(2)) / abs((theta(8+5) - C(2))) )*...
         (1+ (X(3) - C(3)) / abs((theta(16+5) - C(3))) );

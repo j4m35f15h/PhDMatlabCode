@@ -1,8 +1,9 @@
 function [local,localIndex] = neighbours83D(In,lattice,cols,rows)
-%NEIGHBOURS83D Summary of this function goes here
-%   Detailed explanation goes here
+%NEIGHBOURS83D Finds the 26 vertices that surround a vertex. These are
+%found by finding the neighbours of the neighbours from using the simpler
+%neighbours3D function
 
-%This function will error is provided with an edge position.
+%This function will return a zero if provided with an edge position.
 
 [~,localIndex] = neighbours3D(In,lattice,cols,rows);
 [~,tempLocalIndex] = neighbours3D(localIndex(1),lattice,cols,rows);

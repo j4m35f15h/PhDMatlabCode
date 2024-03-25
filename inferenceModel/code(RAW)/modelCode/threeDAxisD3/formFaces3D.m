@@ -1,8 +1,15 @@
 function [faces] = formFaces3D(rows,cols,deps)
-%FORMFACES Summary of this function goes here
-%   Detailed explanation goes here
+%FORMFACES For each cube in the lattice, creates an 8 element vectore
+%containing the indices of the vertices that outline the cube. Works
+%similarly to how meshes are created from STL files.
 
-faces = zeros(size( (rows-1)*(cols-1)*(deps-1) ,4));
+%The number of cubes is one fewer than the number of vertices in each
+%dimension.
+faces = zeros(size( (rows-1)*(cols-1)*(deps-1) ,8));
+
+%Consider the loop as moving to invidual vertices, and defining a single
+%cube it is a part of. by performing this for all vertices not on the outer
+%edge, all cubes are created. 
 pos = 1;
 for k = 1:deps-1
     for i = 1:rows-1
