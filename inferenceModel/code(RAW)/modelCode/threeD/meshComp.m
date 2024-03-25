@@ -1,7 +1,8 @@
+%plot script to show difference between the estimated and end model geometry
 figure
 meshEst.vertices = zeros(size(object.vertices));
 for i = 1:size(object.vertices,1)%Create limb shape estimate
-meshEst.vertices(i,:) = object.vertexCoef(i,:)*[latticeNew(object.vertexCube(i,:))',latticeNew(object.vertexCube(i,:)+N)',latticeNew(object.vertexCube(i,:)+2*N)'];
+  meshEst.vertices(i,:) = object.vertexCoef(i,:)*[latticeNew(object.vertexCube(i,:))',latticeNew(object.vertexCube(i,:)+N)',latticeNew(object.vertexCube(i,:)+2*N)'];
 end
 meshEst.faces = object.faces;
 patch('Faces',meshEst.faces,'Vertices',meshEst.vertices,'FaceColor','red')
